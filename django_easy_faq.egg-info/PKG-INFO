@@ -1,0 +1,48 @@
+Metadata-Version: 1.1
+Name: django-easy-faq
+Version: 0.1
+Summary: A Django app to add great faq functionality to website.
+Home-page: UNKNOWN
+Author: UNKNOWN
+Author-email: UNKNOWN
+License: BSD-3-Clause  # Example license
+Description: ========
+        easy-faq
+        ========
+        
+        easy-faq is a Django app to allow for a simple yet feature rich faq app. with categories, commenting voting of questions and answers all as an optional part of the app.
+        
+        Detailed documentation is in the "docs" directory.
+        
+        Quick start
+        -----------
+        
+        1. Add "easy-faq" to your INSTALLED_APPS setting like this::
+        
+            INSTALLED_APPS = [
+                ...
+                'easy-faq',
+            ]
+        
+        2. Include the easy-faq URLconf in your project urls.py like this::
+        
+            path('faq/', include('easy-faq.urls')),
+        
+        3. Run ``python manage.py migrate`` to create the easy-faq models.
+        
+        4. Start the development server and visit http://127.0.0.1:8000/admin/
+           to create a category (you'll need the Admin app enabled).(categories part of the app can be disabled)
+        
+        5. Visit http://127.0.0.1:8000/faq/ to see the categories.
+Platform: UNKNOWN
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
