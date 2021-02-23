@@ -1,0 +1,96 @@
+<h1>{{question.question|title}}</h1>
+{% if can_vote_question %}
+    found this question helpful?
+    <form style="display: inline;" action="{% if category_enabled %}{% url 'faq:vote_question' question.category.slug question.slug %}{% else %}{% url 'faq:vote_question' question.slug %}{% endif %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" value=True name="vote">
+        <button type="submit">yes({{question.helpful}})</button>
+    </form>
+    <form style="display: inline;" action="{% if category_enabled %}{% url 'faq:vote_question' question.category.slug question.slug %}{% else %}{% url 'faq:vote_question' question.slug %}{% endif %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" value=False name="vote">
+         <button type="submit">no({{question.not_helpful}})</button>
+    </form>
+{% endif %}
+{% if question.category and category_enabled %}
+    <p>category - <a href="{% url 'faq:category_detail' question.category.slug %}">{{question.category.name}}</a></p>
+{% endif %}
+<hr>
+
+{% if allow_multiple_answers %}
+<h3>answers</h3>
+<ul>
+    {% for answer in question.answer_set.all %}
+        <li><b>{{answer.answer}}</b>
+            {% if can_vote_answer %}
+             | found this answer helpful?
+            <form style="display: inline;" action="{% if category_enabled %}{% url 'faq:vote_answer' question.category.slug question.slug answer.slug %}{% else %}{% url 'faq:vote_answer' question.slug answer.slug %}{% endif %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" value=True name="vote">
+                <button type="submit">yes({{answer.helpful}})</button>
+            </form>
+            <form style="display: inline;" action="{% if category_enabled %}{% url 'faq:vote_answer' question.category.slug question.slug answer.slug %}{% else %}{% url 'faq:vote_answer' question.slug answer.slug %}{% endif %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" value=False name="vote">
+                <button type="submit">no({{answer.not_helpful}})</button>
+            </form>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+
+{% else %}
+    {% if question.answer_set.exists %}
+        <p>answer:</p>
+        <h3>{{question.answer_set.first.answer}}</h3>
+        {% if can_vote_answer %}
+         found this answer helpful?
+        <form style="display: inline;" action="{% if category_enabled %}{% url 'faq:vote_answer' question.category.slug question.slug question.answer_set.first.slug %}{% else %}{% url 'faq:vote_answer' question.slug question.answer_set.first.slug %}{% endif %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" value=True name="vote">
+            <button type="submit">yes({{question.answer_set.first.helpful}})</button>
+        </form>
+        <form style="display: inline;" action="{% if category_enabled %}{% url 'faq:vote_answer' question.category.slug question.slug question.answer_set.first.slug %}{% else %}{% url 'faq:vote_answer' question.slug question.answer_set.first.slug %}{% endif %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" value=False name="vote">
+            <button type="submit">no({{question.answer_set.first.not_helpful}})</button>
+        </form>
+        {% endif %}
+    {% else %}
+        no answers yet
+    {% endif %}
+{% endif %}
+
+
+{% if can_answer_question %}
+    {% if category_enabled %}
+        <a href="{% url 'faq:answer_question' question.category.slug question.slug %}">answer question</a>
+    {% else %}
+        <a href="{% url 'faq:answer_question' question.slug %}">answer question</a>
+    {% endif %}
+{% endif %}
+<hr>
+{% if comments_allowed %}
+<h3>comments</h3>
+    <ul>
+        {% for comment in question.faqcomment_set.all %}
+            <li><h4>{{comment.comment}}</h4>
+                posted by {% if comment.user%}{{comment.user}}{% else %}anonymous{% endif %} {{comment.post_time|timesince}} ago</li>
+        {% endfor %}
+    </ul>
+{% if add_new_comment_allowed %}
+    {% if category_enabled %}
+    <form method="post" action="{% url 'faq:add_comment' question.category.slug question.slug %}">
+    {% else %}
+    <form method="post" action="{% url 'faq:add_comment' question.slug %}">
+
+    {% endif %}
+    <fieldset>
+        <legend>Post Your Comment Here:</legend>
+        {% csrf_token %}
+        {{comment_form}}
+        <input type="submit" name="post">
+    </fieldset>
+    </form>
+    {% endif %}
+{% endif %}

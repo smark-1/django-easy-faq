@@ -4,10 +4,13 @@ easy-faq
 
 easy-faq is a Django app to allow for a simple yet feature rich faq app. with categories, commenting voting of questions and answers all as an optional part of the app.
 
-Detailed documentation is in the "docs" directory.
 
 Quick start
 -----------
+
+1. pip install::
+
+    pip install https://github.com/rabbit463/django-easy-faq/blob/master/dist/django-easy-faq-0.3.tar.gz?raw=true
 
 1. Add "easy-faq" to your INSTALLED_APPS setting like this::
 
@@ -220,6 +223,7 @@ here is a list of templates and there default template  you can overwrite
         {{form}}
         <input type="submit">
     </form>
+
 6. comment_form.html - form to add comments to question (only shows up when form has error because view only gets posted to)::
 
     <h1>Post A Comment</h1>
@@ -280,4 +284,3 @@ Template Variables
     form - form to add new question
 8. vote_form.html
     form - form to vote for a question or answer
-

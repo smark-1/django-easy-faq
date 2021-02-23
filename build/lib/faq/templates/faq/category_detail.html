@@ -1,0 +1,14 @@
+<h1>choose a FAQ Question</h1>
+<h2>{{category}}</h2>
+{% if category.description %}
+<p>{{category.description}}</p>
+{% endif %}
+<hr>
+{% for question in category.question_set.all %}
+    <h3><a href="{% url 'faq:question_detail' category.slug question.slug %}">{{question.question}}</a></h3>
+{% endfor %}
+<hr>
+<a href="{% url 'faq:index_view' %}">back</a>
+{% if can_add_question %}
+    <a href="{% url 'faq:add_question' category.slug %}">add question</a>
+{% endif %}
