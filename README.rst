@@ -84,7 +84,7 @@ here is a list of templates and there default template  you can overwrite
     {% endfor %}
 
 
-2. categories_detail.html - faq category detail view if using categories::
+2. category_detail.html - faq category detail view if using categories::
 
     <h1>choose a FAQ Question</h1>
     <h2>{{category}}</h2>
