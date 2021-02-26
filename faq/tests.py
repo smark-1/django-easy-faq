@@ -1,6 +1,6 @@
 from django.test import TestCase, RequestFactory,override_settings
 from django.shortcuts import reverse
-from .views import IndexView,CategoryDetail
+from .views import IndexView,CategoryDetail,QuestionDetail
 from . import models
 from django.contrib.auth.models import User
 # Create your tests here.
@@ -118,12 +118,55 @@ class CategoryDetailTestCase(TestCase):
         models.Category.objects.create(name="cat1", description="descript")
         models.Category.objects.create(name="cat2", description="descript2")
         models.Category.objects.create(name="cat3")
-    
+
+
+class QuestionViewTestCase(TestCase):
+    def setUp(self):
+        category = models.Category.objects.create(name="cat1", description="descript")
+
+        models.Question.objects.create(category=category,question="great question")
+
     @override_settings(FAQ_SETTINGS=[])
-    def test_get_context_data(self):
-        request = RequestFactory().get(reverse("faq:category_detail",args=("cat1",)))
-        view = CategoryDetail()
-        view.object = view.get_object()
-        view.setup(request)
-        
-        view.get_context_data()
+    def test_anonymous_user_cant_vote(self):
+        """a user doesn't get a link to vote"""
+
+        question = models.Question.objects.first()
+        response = self.client.get(reverse("faq:question_detail", args=(question.category.slug, question.slug,)))
+
+        self.assertEqual(response.context['can_vote_question'],False)
+        self.assertEqual(response.context['can_vote_answer'],False)
+
+
+class VoteQuestionTestCase(TestCase):
+    def setUp(self):
+        category = models.Category.objects.create(name="cat1", description="descript")
+
+        models.Question.objects.create(category=category,question="great question")
+
+    @override_settings(FAQ_SETTINGS=[])
+    def test_anonymous_user_cant_vote(self):
+        """redirects logged out users to login page"""
+
+        question = models.Question.objects.first()
+        response = self.client.post(reverse("faq:vote_question", args=(question.category.slug, question.slug,)))
+
+
+        self.assertEqual(response.status_code,302)
+
+class VoteanswerTestCase(TestCase):
+    def setUp(self):
+        category = models.Category.objects.create(name="cat1", description="descript")
+
+        question = models.Question.objects.create(category=category,question="great question")
+
+        self.answer = models.Answer.objects.create(question=question,answer="because")
+
+    @override_settings(FAQ_SETTINGS=[])
+    def test_anonymous_user_cant_vote(self):
+        """redirects logged out users to login page"""
+
+        question = models.Question.objects.first()
+        response = self.client.post(reverse("faq:vote_answer", args=(question.category.slug, question.slug,self.answer.slug)))
+
+
+        self.assertEqual(response.status_code,302)

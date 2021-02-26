@@ -152,13 +152,21 @@ class QuestionDetail(generic.DetailView):
         if "no_votes" not in settings.FAQ_SETTINGS:
             # if can vote answer
             if "no_answer_votes" not in settings.FAQ_SETTINGS:
-                context["can_vote_answer"] = True
+                if self.request.user.is_authenticated:
+                    context["can_vote_answer"] = True
+                else:
+                    context["can_vote_answer"] = False
             else:
+
                 context["can_vote_answer"] = False
 
             if "no_question_votes" not in settings.FAQ_SETTINGS:
-                context["can_vote_question"] = True
+                if self.request.user.is_authenticated:
+                    context["can_vote_question"] = True
+                else:
+                    context["can_vote_question"] = False
             else:
+
                 context["can_vote_question"] = False
         else:
             context["can_vote_answer"] = False
@@ -314,6 +322,8 @@ class VoteAnswerHelpful(UserPassesTestMixin,generic.FormView):
             return False
         elif "no_votes" in settings.FAQ_SETTINGS:
             return False
+        if not self.request.user.is_authenticated:
+            return False
         return True
 
 class VoteQuestionHelpful(UserPassesTestMixin,generic.FormView):
@@ -348,5 +358,7 @@ class VoteQuestionHelpful(UserPassesTestMixin,generic.FormView):
         if "no_question_votes" in settings.FAQ_SETTINGS:
             return False
         elif "no_votes" in settings.FAQ_SETTINGS:
+            return False
+        if not self.request.user.is_authenticated:
             return False
         return True

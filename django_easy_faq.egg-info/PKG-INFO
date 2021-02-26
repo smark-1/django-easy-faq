@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: django-easy-faq
-Version: 0.3
+Version: 0.4
 Summary: A Django app to add great faq functionality to website.
 Home-page: UNKNOWN
 Author: UNKNOWN
@@ -18,7 +18,7 @@ Description: ========
         
         1. pip install::
         
-            pip install https://github.com/rabbit463/django-easy-faq/blob/master/dist/django-easy-faq-0.3.tar.gz?raw=true
+            pip install https://github.com/rabbit463/django-easy-faq/blob/master/dist/django-easy-faq-0.4.tar.gz?raw=true
         
         1. Add "easy-faq" to your INSTALLED_APPS setting like this::
         
@@ -293,6 +293,9 @@ Description: ========
         8. vote_form.html
             form - form to vote for a question or answer
         
+        change log
+        ----------
+        0.4 fixed bug that logged out users can vote - which then raises exceptions
 Platform: UNKNOWN
 Classifier: Environment :: Web Environment
 Classifier: Framework :: Django
