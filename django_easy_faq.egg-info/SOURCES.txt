@@ -15,6 +15,8 @@ faq/snippets.py
 faq/tests.py
 faq/urls.py
 faq/views.py
+faq/migrations/0001_initial.py
+faq/migrations/__init__.py
 faq/templates/faq/answer_form.html
 faq/templates/faq/categories_list.html
 faq/templates/faq/category_detail.html

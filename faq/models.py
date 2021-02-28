@@ -49,6 +49,8 @@ class Answer(models.Model):
     def __str__(self):
         return self.answer
 
+    class Meta:
+        order_with_respect_to = 'question'
 
     def save(self,*args,**kwargs):
         # if first time saving add a new slug

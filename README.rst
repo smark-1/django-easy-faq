@@ -10,7 +10,7 @@ Quick start
 
 1. pip install::
 
-    pip install https://github.com/rabbit463/django-easy-faq/blob/master/dist/django-easy-faq-0.4.tar.gz?raw=true
+    pip install https://github.com/rabbit463/django-easy-faq/blob/master/dist/django-easy-faq-0.5.tar.gz?raw=true
 
 1. Add "easy-faq" to your INSTALLED_APPS setting like this::
 
@@ -288,3 +288,4 @@ Template Variables
 change log
 ----------
 0.4 fixed bug that logged out users can vote - which then raises exceptions
+0.5 fixed migrations
