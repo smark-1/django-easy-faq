@@ -285,7 +285,41 @@ Template Variables
 8. vote_form.html
     form - form to vote for a question or answer
 
+Urls
+------------------
+all of the following urls are by name then additional
+the app name for the urls is ``'faq'``
+
+* index_view
+    * no arguments
+    * displays all the categories if categories are enabled otherwise shows questions
+* category_detail
+    * needs category slug as slug
+    * displays all the questions given the category when categories are enabled
+* add_question
+    * if categories are enabled needs category slug as slug
+    * if logged_in_users_can_add_question then displays form for logged in users to ask a new question
+* question_detail
+    * needs question slug as question | if categories are enabled needs category slug as slug
+    * displays the main FAQ page with the question all the comments and answers
+* answer_question
+    * needs question slug as question | if categories are enabled needs category slug as category
+    * displays the answer question form
+* add_comment
+    * needs question slug as question | if categories are enabled needs category slug as category
+    * only works if using comments
+    * used to post comment form from question_detail to database
+* vote_answer
+    * needs question slug as question | needs answer slug as answer | if categories are enabled needs category slug as category
+    * only works if using answer voting
+    * used to post hidden input vote = 1 or vote = 0 depending on vote up or down
+* vote_question
+    * needs question slug as question | if categories are enabled needs category slug as category
+    * only works if using question voting
+    * used to post hidden input vote = 1 or vote = 0 depending on vote up or down
+
 change log
 ----------
 0.4 fixed bug that logged out users can vote - which then raises exceptions
 0.5 fixed migrations
+1.0 added pypi distribution
