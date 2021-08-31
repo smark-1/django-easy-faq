@@ -10,7 +10,7 @@ Quick start
 
 1. pip install::
 
-    pip install https://github.com/dragoncommits/django-easy-faq/blob/master/dist/django-easy-faq-0.5.tar.gz?raw=true
+    pip install django-easy-faq
 
 1. Add "easy-faq" to your INSTALLED_APPS setting like this::
 
