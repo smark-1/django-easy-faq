@@ -306,6 +306,10 @@ the app name for the urls is ``'faq'``
     * only works if using question voting
     * used to post hidden input vote = 1 or vote = 0 depending on vote up or down
 
+Contributing
+____________
+django-easy-faq aims to be the best faq app for django. It welcomes  contributions of all types - issues, bugs, feature requests, documentation updates, tests and pull requests
+
 change log
 ----------
 0.4 fixed bug that logged out users can vote - which then raises exceptions
