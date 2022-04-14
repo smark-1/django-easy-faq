@@ -1,6 +1,10 @@
-<h1>Add Your Question</h1>
+{% extends 'faq/base.html' %}
+{% block title %}FAQ | Ask Question{% endblock %}
+{% block heading %}Ask Question{% endblock %}
+{% block content %}
 <form method="post">
     {% csrf_token %}
     {{form}}
     <input type="submit">
 </form>
+{% endblock %}

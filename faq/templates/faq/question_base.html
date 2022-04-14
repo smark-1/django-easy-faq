@@ -1,0 +1,27 @@
+{% extends 'faq/base.html' %}
+{% block title %}FAQ | {{question.question|title}}{% endblock %}
+{% block heading %}{{question.question|title}}{% endblock %}
+
+{% block content %}
+{% if can_vote_question %}
+    found this question helpful?
+    <form style="display: inline;" action="{% if category_enabled %}{% url 'faq:vote_question' question.category.slug question.slug %}{% else %}{% url 'faq:vote_question' question.slug %}{% endif %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" value=True name="vote">
+        <button type="submit">yes({{question.helpful}})</button>
+    </form>
+    <form style="display: inline;" action="{% if category_enabled %}{% url 'faq:vote_question' question.category.slug question.slug %}{% else %}{% url 'faq:vote_question' question.slug %}{% endif %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" value=False name="vote">
+         <button type="submit">no({{question.not_helpful}})</button>
+    </form>
+{% endif %}
+{% if question.category and category_enabled %}
+    <p>category - <a href="{% url 'faq:category_detail' question.category.slug %}">{{question.category.name}}</a></p>
+{% endif %}
+<hr/>
+
+{% block question_content %}
+{% endblock %}
+
+{% endblock %}

@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'django-easy-faq',         # How you named your package folder (MyLib)
 
-  version = '1.0',      # Start with a small number and increase it with every change you make
+  version = '1.1',      # Start with a small number and increase it with every change you make
   license='MIT',        # Chose a license from here: https://help.github.com/articles/licensing-a-repository
   author = 'dragoncommits',                   # Type in your name
   url = 'https://github.com/dragoncommits/django-easy-faq/',   # Provide either the link to your github or to your website

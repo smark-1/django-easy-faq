@@ -1,4 +1,8 @@
-<h1>choose a FAQ Question</h1>
+{% extends 'faq/base.html' %}
+{% block title %}FAQ | choose a FAQ Question{% endblock %}
+{% block heading %} choose a FAQ Question {% endblock %}
+
+{% block content %}
 <h2>{{category}}</h2>
 {% if category.description %}
 <p>{{category.description}}</p>
@@ -12,3 +16,4 @@
 {% if can_add_question %}
     <a href="{% url 'faq:add_question' category.slug %}">add question</a>
 {% endif %}
+{% endblock %}

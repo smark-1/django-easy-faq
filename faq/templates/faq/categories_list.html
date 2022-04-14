@@ -1,8 +1,12 @@
-<h1>select a FAQ category</h1>
+{% extends 'faq/base.html' %}
+{% block title %}FAQ | Choose Category{% endblock %}
+{% block heading %} select a FAQ category {% endblock %}
+{% block content %}
 {% for category in categories %}
     <h3><a href="{% url 'faq:category_detail' category.slug %}">{{category.name}}</a></h3>
     {% if category.description %}
         <p>{{category.description}}</p>
     {% endif %}
-<hr>
+    <hr>
 {% endfor %}
+{% endblock %}

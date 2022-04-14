@@ -1,6 +1,10 @@
-<h1>vote</h1>
-<form method="post">
-    {% csrf_token %}
-    {{form}}
-    <input type="submit">
-</form>
+{% extends 'faq/base.html' %}
+{% block title %}FAQ | Vote{% endblock %}
+{% block heading %}Vote{% endblock %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit">
+    </form>
+{% endblock %}

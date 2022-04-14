@@ -5,6 +5,8 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.conf import settings
 from . import models
 from . import forms
+from .snippets import get_template_settings
+
 # Create your views here.
 class IndexView(generic.ListView):
     """
@@ -31,12 +33,7 @@ class IndexView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
-        # if not using categories
-        if "no_category" in settings.FAQ_SETTINGS:
-            context["can_add_question"]=False
-            if "logged_in_users_can_add_question" in settings.FAQ_SETTINGS:
-                if self.request.user.is_authenticated:
-                    context["can_add_question"] = True
+        context.update(get_template_settings(self.request))  # add in all settings into templates
         return context
 
 class CategoryDetail(generic.DetailView):
@@ -49,9 +46,7 @@ class CategoryDetail(generic.DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context=super().get_context_data()
-        if "logged_in_users_can_add_question" in settings.FAQ_SETTINGS:
-            if self.request.user.is_authenticated:
-                context["can_add_question"] = True
+        context.update(get_template_settings(self.request))  # add in all settings into templates
         return context
 
 class AddQuestion(UserPassesTestMixin,generic.CreateView):
@@ -102,16 +97,7 @@ class QuestionDetail(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data()
-        # if using categories
-        if "no_category" not in settings.FAQ_SETTINGS:
-            context['category_enabled']=True
-        else:
-            context['category_enabled']=False
-
-        if "allow_multiple_answers" in settings.FAQ_SETTINGS:
-            context['allow_multiple_answers'] = True
-        else:
-            context['allow_multiple_answers'] = False
+        context.update(get_template_settings(self.request))  # add in all settings into templates
 
         # check if logged in users are allowed to answer questions
         if "logged_in_users_can_answer_question" in settings.FAQ_SETTINGS:
@@ -129,49 +115,6 @@ class QuestionDetail(generic.DetailView):
                 context['can_answer_question'] = False
         else:
             context['can_answer_question'] = False
-
-
-
-        # if using comments
-        if "no_comments" not in settings.FAQ_SETTINGS:
-            context["comments_allowed"]=True
-            if "anonymous_user_can_comment" in settings.FAQ_SETTINGS:
-                context['add_new_comment_allowed'] = True
-            else:
-                if self.request.user.is_authenticated:
-                    context['add_new_comment_allowed'] = True
-                else:
-                    context['add_new_comment_allowed'] = False
-
-            if "view_only_comments" in settings.FAQ_SETTINGS:
-                context['add_new_comment_allowed'] = False
-        else:
-            context["comments_allowed"] = False
-
-        # if can vote on answers
-        if "no_votes" not in settings.FAQ_SETTINGS:
-            # if can vote answer
-            if "no_answer_votes" not in settings.FAQ_SETTINGS:
-                if self.request.user.is_authenticated:
-                    context["can_vote_answer"] = True
-                else:
-                    context["can_vote_answer"] = False
-            else:
-
-                context["can_vote_answer"] = False
-
-            if "no_question_votes" not in settings.FAQ_SETTINGS:
-                if self.request.user.is_authenticated:
-                    context["can_vote_question"] = True
-                else:
-                    context["can_vote_question"] = False
-            else:
-
-                context["can_vote_question"] = False
-        else:
-            context["can_vote_answer"] = False
-            context["can_vote_question"] = False
-
 
         context["comment_form"] = forms.CommentForm()
         return context
@@ -212,6 +155,7 @@ class AddAnswer(UserPassesTestMixin,generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data()
+        context.update(get_template_settings(self.request)) # add in all settings into templates
 
         # if using categories
         if "no_category" not in settings.FAQ_SETTINGS:
@@ -221,7 +165,6 @@ class AddAnswer(UserPassesTestMixin,generic.CreateView):
 
         context["question"]=question
         return context
-
 
     def form_valid(self, form):
         form=form.save(commit=False)
@@ -255,6 +198,7 @@ class AddComment(generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
+        context.update(get_template_settings(self.request))  # add in all settings into templates
         context["question"]=self.get_question()
         return context
 
