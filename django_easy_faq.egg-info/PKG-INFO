@@ -1,11 +1,11 @@
 Metadata-Version: 2.1
 Name: django-easy-faq
-Version: 1.0
+Version: 1.2
 Summary: A Django app to add great faq functionality to website.
 Home-page: https://github.com/dragoncommits/django-easy-faq/
+Download-URL: https://github.com/dragoncommits/django-easy-faq/archive/refs/tags/1.1.tar.gz
 Author: dragoncommits
 License: MIT
-Download-URL: https://github.com/dragoncommits/django-easy-faq/archive/refs/tags/1.0.tar.gz
 Keywords: django,FAQ,django-easy-faq,simple,frequently asked questions
 Platform: UNKNOWN
 Classifier: Development Status :: 5 - Production/Stable
@@ -15,8 +15,8 @@ Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: Python :: 3.4
 Classifier: Programming Language :: Python :: 3.5
 Classifier: Programming Language :: Python :: 3.6
-License-File: license
 License-File: LICENSE.txt
+License-File: license
 
 ========
 easy-faq
@@ -137,25 +137,9 @@ here is a list of templates and there default template  you can overwrite
 
 4. question_detail.html - the question detail page::
 
-    <h1>{{question.question|title}}</h1>
-    {% if can_vote_question %}
-        found this question helpful?
-        <form style="display: inline;" action="{% if category_enabled %}{% url 'faq:vote_question' question.category.slug question.slug %}{% else %}{% url 'faq:vote_question' question.slug %}{% endif %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" value=True name="vote">
-            <button type="submit">yes({{question.helpful}})</button>
-        </form>
-        <form style="display: inline;" action="{% if category_enabled %}{% url 'faq:vote_question' question.category.slug question.slug %}{% else %}{% url 'faq:vote_question' question.slug %}{% endif %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" value=False name="vote">
-             <button type="submit">no({{question.not_helpful}})</button>
-        </form>
-    {% endif %}
-    {% if question.category and category_enabled %}
-        <p>category - <a href="{% url 'faq:category_detail' question.category.slug %}">{{question.category.name}}</a></p>
-    {% endif %}
-    <hr>
+    {% extends 'faq/question_base.html' %}
 
+    {% block question_content %}
     {% if allow_multiple_answers %}
     <h3>answers</h3>
     <ul>
@@ -210,29 +194,10 @@ here is a list of templates and there default template  you can overwrite
     {% endif %}
     <hr>
     {% if comments_allowed %}
-    <h3>comments</h3>
-        <ul>
-            {% for comment in question.faqcomment_set.all %}
-                <li><h4>{{comment.comment}}</h4>
-                    posted by {% if comment.user%}{{comment.user}}{% else %}anonymous{% endif %} {{comment.post_time|timesince}} ago</li>
-            {% endfor %}
-        </ul>
-    {% if add_new_comment_allowed %}
-        {% if category_enabled %}
-        <form method="post" action="{% url 'faq:add_comment' question.category.slug question.slug %}">
-        {% else %}
-        <form method="post" action="{% url 'faq:add_comment' question.slug %}">
-
-        {% endif %}
-        <fieldset>
-            <legend>Post Your Comment Here:</legend>
-            {% csrf_token %}
-            {{comment_form}}
-            <input type="submit" name="post">
-        </fieldset>
-        </form>
-        {% endif %}
+        {% include 'faq/comments.html' %}
     {% endif %}
+
+    {% endblock %}
 
 5. answer_form.html - form to add answer to question::
 
@@ -272,6 +237,29 @@ here is a list of templates and there default template  you can overwrite
         <input type="submit">
     </form>
 
+9. comments.html - if comments are allowed this template is included in the question detail.html::
+
+    <h3>comments</h3>
+    <ul>
+        {% for comment in question.faqcomment_set.all %}
+            <li><h4>{{comment.comment}}</h4>
+                posted by {% if comment.user%}{{comment.user}}{% else %}anonymous{% endif %} {{comment.post_time|timesince}} ago</li>
+        {% endfor %}
+    </ul>
+    {% if add_new_comment_allowed %}
+        {% if category_enabled %}
+        <form method="post" action="{% url 'faq:add_comment' question.category.slug question.slug %}">
+        {% else %}
+        <form method="post" action="{% url 'faq:add_comment' question.slug %}">
+        {% endif %}
+        <fieldset>
+            <legend>Post Your Comment Here:</legend>
+            {% csrf_token %}
+            {{comment_form}}
+            <input type="submit" name="post">
+        </fieldset>
+        </form>
+        {% endif %}
 
 Template Variables
 ------------------
@@ -338,9 +326,14 @@ the app name for the urls is ``'faq'``
     * only works if using question voting
     * used to post hidden input vote = 1 or vote = 0 depending on vote up or down
 
+Contributing
+____________
+django-easy-faq aims to be the best faq app for django. It welcomes  contributions of all types - issues, bugs, feature requests, documentation updates, tests and pull requests
+
 change log
 ----------
 0.4 fixed bug that logged out users can vote - which then raises exceptions
 0.5 fixed migrations
 1.0 added pypi distribution
+1.1 added more templates to override easily
 

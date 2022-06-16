@@ -313,6 +313,11 @@ django-easy-faq aims to be the best faq app for django. It welcomes  contributio
 change log
 ----------
 0.4 fixed bug that logged out users can vote - which then raises exceptions
+
 0.5 fixed migrations
+
 1.0 added pypi distribution
+
 1.1 added more templates to override easily
+
+1.2 fixed bug in pypi distro not including faq app
