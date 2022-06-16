@@ -12,7 +12,7 @@ Quick start
 
     pip install django-easy-faq
 
-1. Add "easy-faq" to your INSTALLED_APPS setting like this::
+1. Add "faq" to your INSTALLED_APPS setting like this::
 
     INSTALLED_APPS = [
         ...
