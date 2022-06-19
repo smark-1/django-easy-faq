@@ -36,7 +36,7 @@ class Question(models.Model):
 class Answer(models.Model):
     question = models.ForeignKey(Question,on_delete=models.CASCADE)
     answer   = models.TextField()
-    slug = models.SlugField(max_length=10)
+    slug = models.SlugField(max_length=10, blank=True)
     helpful = models.IntegerField(default=0)
     not_helpful = models.IntegerField(default=0)
 
@@ -54,8 +54,8 @@ class Answer(models.Model):
 
     def save(self,*args,**kwargs):
         # if first time saving add a new slug
-        if not self.pk:
-            new_slug= snippets.create_random_slug(5)
+        if not self.pk or not self.slug:
+            new_slug = snippets.create_random_slug(5)
             while Answer.objects.filter(slug=new_slug,answer=self.answer).exists():
                 new_slug = snippets.create_random_slug()
             self.slug=new_slug
@@ -66,7 +66,7 @@ class Answer(models.Model):
 class Category(models.Model):
     name        = models.CharField(max_length=50,unique=True)
     description = models.TextField()
-    slug        =models.SlugField(max_length=50,unique=True)
+    slug        =models.SlugField(max_length=50,unique=True, blank=True)
 
     def __str__(self):
         return self.name

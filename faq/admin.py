@@ -18,11 +18,12 @@ class AnswerAdmin(admin.ModelAdmin):
     list_display = ("answer","question" ,"helpful", "not_helpful")
     list_filter = ('helpful', "not_helpful")
     search_fields = ['answer', "question"]
-    readonly_fields = ('helpful',"not_helpful")
+    readonly_fields = ('helpful', "not_helpful", 'slug')
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("name","slug" ,"description")
     search_fields = ['name', "description"]
+    readonly_fields = ("slug",)
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ("comment","question" ,"user", "post_time")
@@ -33,7 +34,7 @@ class QuestionAdmin(admin.ModelAdmin):
     list_display = ("question","category" ,"slug","helpful", "not_helpful")
     list_filter = ('helpful', "not_helpful","category")
     search_fields = ["question"]
-    readonly_fields = ('helpful',"not_helpful")
+    readonly_fields = ('helpful',"not_helpful", "slug")
 
 admin.site.register(Question,QuestionAdmin)
 admin.site.register(Answer,AnswerAdmin)
