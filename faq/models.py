@@ -7,7 +7,7 @@ from . import snippets
 class Question(models.Model):
     category = models.ForeignKey("category",on_delete=models.SET_NULL,null=True,blank=True)
     question = models.CharField(max_length=150, unique=True)
-    slug     = models.SlugField(max_length=150, unique=True)
+    slug     = models.SlugField(max_length=150, unique=True, blank=True)
     helpful = models.IntegerField(default=0)
     not_helpful = models.IntegerField(default=0)
 
