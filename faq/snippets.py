@@ -1,10 +1,12 @@
 import secrets
 from django.conf import settings
+
 ALL_URL_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
 
 def create_random_slug(size=10):
     """amount of characters you want generated for random_slug"""
-    res=''.join(secrets.choice(ALL_URL_CHARS) for _ in range(size))
+    res = ''.join(secrets.choice(ALL_URL_CHARS) for _ in range(size))
     return str(res)
 
 
@@ -22,7 +24,6 @@ def get_template_settings(request):
     else:
         context['allow_multiple_answers'] = False
 
-
     # if using comments
     if "no_comments" not in settings.FAQ_SETTINGS:
         context["comments_allowed"] = True
@@ -38,7 +39,6 @@ def get_template_settings(request):
             context['add_new_comment_allowed'] = False
     else:
         context["comments_allowed"] = False
-
 
     # if can vote on answers
     if "no_votes" not in settings.FAQ_SETTINGS:
@@ -63,7 +63,6 @@ def get_template_settings(request):
     else:
         context["can_vote_answer"] = False
         context["can_vote_question"] = False
-
 
     context["can_add_question"] = False
     if "logged_in_users_can_add_question" in settings.FAQ_SETTINGS:

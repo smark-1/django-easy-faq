@@ -8,7 +8,7 @@ urlpatterns = [
     path("", views.IndexView.as_view(), name="index_view"),
 ]
 
-#if using categories
+# if using categories
 if "no_category" not in settings.FAQ_SETTINGS:
     urlpatterns += [
         path("<slug:slug>/", views.CategoryDetail.as_view(), name="category_detail"),
@@ -23,7 +23,7 @@ else:
         path("add/question", views.AddQuestion.as_view(), name="add_question"),
     ]
 
-#if using comments
+# if using comments
 if "no_comments" not in settings.FAQ_SETTINGS:
     # if using categories
     if "no_category" not in settings.FAQ_SETTINGS:
@@ -35,8 +35,7 @@ if "no_comments" not in settings.FAQ_SETTINGS:
             path("<slug:question>/add/comment/", views.AddComment.as_view(), name="add_comment"),
         ]
 
-
-#if using votes
+# if using votes
 if "no_votes" not in settings.FAQ_SETTINGS:
     # if using categories
     if "no_category" not in settings.FAQ_SETTINGS:
