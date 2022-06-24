@@ -49,6 +49,7 @@ add any or all to change to desired behavior::
 9. no_votes                                 - add if don't want any voting for useful questions or answers
 10. no_answer_votes                         - add if only want question voting
 11. no_question_votes                       - add if only want answer voting
+12. allow_unicode                           - add if you want to allow unicode slugs
 
 ## Templates
 

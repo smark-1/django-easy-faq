@@ -24,7 +24,7 @@ class Question(models.Model):
         return self.question
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.question, allow_unicode=True)[:150]
+        self.slug = slugify(self.question, allow_unicode='allow_unicode' in settings.FAQ_SETTINGS)[:150]
         self.helpful = self.get_helpful()
         self.not_helpful = self.get_not_helpful()
         return super().save(*args, **kwargs)
@@ -80,7 +80,7 @@ class Category(models.Model):
         verbose_name_plural = "categories"
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name, allow_unicode=True)[:50]
+        self.slug = slugify(self.name, allow_unicode='allow_unicode' in settings.FAQ_SETTINGS)[:50]
         return super().save(*args, **kwargs)
 
 
