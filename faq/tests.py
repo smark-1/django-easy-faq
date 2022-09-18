@@ -1,8 +1,10 @@
-from django.test import TestCase, RequestFactory,override_settings
+from django.test import TestCase, RequestFactory, override_settings
 from django.shortcuts import reverse
-from .views import IndexView,CategoryDetail,QuestionDetail
+from .views import IndexView, CategoryDetail, QuestionDetail
 from . import models
 from django.contrib.auth.models import User
+
+
 # Create your tests here.
 
 class IndexViewTestCase(TestCase):
@@ -14,8 +16,8 @@ class IndexViewTestCase(TestCase):
         view = IndexView()
         view.setup(request)
 
-        self.assertEquals(view.get_template_names(),"faq/questions_list.html")
-        self.assertNotEquals(view.get_template_names(),"faq/categories_list.html")
+        self.assertEquals(view.get_template_names(), "faq/questions_list.html")
+        self.assertNotEquals(view.get_template_names(), "faq/categories_list.html")
 
     @override_settings(FAQ_SETTINGS=[])
     def test_get_template_names_categories(self):
@@ -38,7 +40,6 @@ class IndexViewTestCase(TestCase):
         models.Question.objects.create(question="the?")
         view.get_queryset()
 
-
         self.assertEqual(view.get_queryset().first(), models.Question.objects.first())
         self.assertNotEqual(view.get_queryset().first(), models.Question.objects.last())
         self.assertNotEqual(view.get_queryset().first(), models.Category.objects.first())
@@ -50,12 +51,11 @@ class IndexViewTestCase(TestCase):
         view = IndexView()
         view.setup(request)
 
-        category= models.Category.objects.create(name="category", description="this is a category")
+        category = models.Category.objects.create(name="category", description="this is a category")
         models.Category.objects.create(name="category 2", description="this is a category")
         models.Question.objects.create(question="category question", category=category)
         models.Question.objects.create(question="category question 2", category=category)
         models.Question.objects.create(question="question not in category")
-
 
         self.assertEqual(view.get_queryset().first(), models.Category.objects.first())
         self.assertNotEqual(view.get_queryset().first(), models.Question.objects.first())
@@ -89,7 +89,7 @@ class IndexViewTestCase(TestCase):
         view.object_list = view.get_queryset()
         view.setup(request)
 
-        self.assertIn("can_add_question",view.get_context_data())
+        self.assertIn("can_add_question", view.get_context_data())
 
     @override_settings(FAQ_SETTINGS=[])
     def test_get_context_data_using_categories(self):
@@ -99,19 +99,20 @@ class IndexViewTestCase(TestCase):
         view.object_list = view.get_queryset()
         view.setup(request)
 
-        self.assertNotIn("can_add_question",view.get_context_data())
+        self.assertNotIn("can_add_question", view.get_context_data())
 
-    @override_settings(FAQ_SETTINGS=["no_category","logged_in_users_can_add_question"])
+    @override_settings(FAQ_SETTINGS=["no_category", "logged_in_users_can_add_question"])
     def test_get_context_data_not_using_categories_logged_in_can_add(self):
         "gets context data correctly when not using categories and logged_in_users_can_add_question"
         request = RequestFactory()
         request = request.get(reverse("faq:index_view"))
-        request.user=User.objects.create_user(username="jim",password="the")
+        request.user = User.objects.create_user(username="jim", password="the")
         view = IndexView()
         view.object_list = view.get_queryset()
         view.setup(request)
 
-        self.assertIn("can_add_question",view.get_context_data())
+        self.assertIn("can_add_question", view.get_context_data())
+
 
 class CategoryDetailTestCase(TestCase):
     def setUp(self):
@@ -124,7 +125,7 @@ class QuestionViewTestCase(TestCase):
     def setUp(self):
         category = models.Category.objects.create(name="cat1", description="descript")
 
-        models.Question.objects.create(category=category,question="great question")
+        models.Question.objects.create(category=category, question="great question")
 
     @override_settings(FAQ_SETTINGS=[])
     def test_anonymous_user_cant_vote(self):
@@ -133,15 +134,15 @@ class QuestionViewTestCase(TestCase):
         question = models.Question.objects.first()
         response = self.client.get(reverse("faq:question_detail", args=(question.category.slug, question.slug,)))
 
-        self.assertEqual(response.context['can_vote_question'],False)
-        self.assertEqual(response.context['can_vote_answer'],False)
+        self.assertEqual(response.context['can_vote_question'], False)
+        self.assertEqual(response.context['can_vote_answer'], False)
 
 
 class VoteQuestionTestCase(TestCase):
     def setUp(self):
         category = models.Category.objects.create(name="cat1", description="descript")
 
-        models.Question.objects.create(category=category,question="great question")
+        models.Question.objects.create(category=category, question="great question")
 
     @override_settings(FAQ_SETTINGS=[])
     def test_anonymous_user_cant_vote(self):
@@ -150,23 +151,23 @@ class VoteQuestionTestCase(TestCase):
         question = models.Question.objects.first()
         response = self.client.post(reverse("faq:vote_question", args=(question.category.slug, question.slug,)))
 
+        self.assertEqual(response.status_code, 302)
 
-        self.assertEqual(response.status_code,302)
 
 class VoteanswerTestCase(TestCase):
     def setUp(self):
         category = models.Category.objects.create(name="cat1", description="descript")
 
-        question = models.Question.objects.create(category=category,question="great question")
+        question = models.Question.objects.create(category=category, question="great question")
 
-        self.answer = models.Answer.objects.create(question=question,answer="because")
+        self.answer = models.Answer.objects.create(question=question, answer="because")
 
     @override_settings(FAQ_SETTINGS=[])
     def test_anonymous_user_cant_vote(self):
         """redirects logged out users to login page"""
 
         question = models.Question.objects.first()
-        response = self.client.post(reverse("faq:vote_answer", args=(question.category.slug, question.slug,self.answer.slug)))
+        response = self.client.post(
+            reverse("faq:vote_answer", args=(question.category.slug, question.slug, self.answer.slug)))
 
-
-        self.assertEqual(response.status_code,302)
+        self.assertEqual(response.status_code, 302)

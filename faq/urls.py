@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import path_converters
 from django.conf import settings
 
 app_name = 'faq'
@@ -8,46 +9,45 @@ urlpatterns = [
     path("", views.IndexView.as_view(), name="index_view"),
 ]
 
-#if using categories
+# if using categories
 if "no_category" not in settings.FAQ_SETTINGS:
     urlpatterns += [
-        path("<slug:slug>/", views.CategoryDetail.as_view(), name="category_detail"),
-        path("<slug:slug>/add/question/", views.AddQuestion.as_view(), name="add_question"),
-        path("<slug:slug>/<slug:question>/", views.QuestionDetail.as_view(), name="question_detail"),
-        path("<slug:category>/<slug:question>/answer/", views.AddAnswer.as_view(), name="answer_question"),
+        path("<uslug:slug>/", views.CategoryDetail.as_view(), name="category_detail"),
+        path("<uslug:slug>/add/question/", views.AddQuestion.as_view(), name="add_question"),
+        path("<uslug:slug>/<uslug:question>/", views.QuestionDetail.as_view(), name="question_detail"),
+        path("<uslug:category>/<uslug:question>/answer/", views.AddAnswer.as_view(), name="answer_question"),
     ]
 else:
     urlpatterns += [
-        path("<slug:slug>/", views.QuestionDetail.as_view(), name="question_detail"),
-        path("<slug:question>/answer/", views.AddAnswer.as_view(), name="answer_question"),
+        path("<uslug:slug>/", views.QuestionDetail.as_view(), name="question_detail"),
+        path("<uslug:question>/answer/", views.AddAnswer.as_view(), name="answer_question"),
         path("add/question", views.AddQuestion.as_view(), name="add_question"),
     ]
 
-#if using comments
+# if using comments
 if "no_comments" not in settings.FAQ_SETTINGS:
     # if using categories
     if "no_category" not in settings.FAQ_SETTINGS:
         urlpatterns += [
-            path("<slug:category>/<slug:question>/add/comment/", views.AddComment.as_view(), name="add_comment"),
+            path("<uslug:category>/<uslug:question>/add/comment/", views.AddComment.as_view(), name="add_comment"),
         ]
     else:
         urlpatterns += [
-            path("<slug:question>/add/comment/", views.AddComment.as_view(), name="add_comment"),
+            path("<uslug:question>/add/comment/", views.AddComment.as_view(), name="add_comment"),
         ]
 
-
-#if using votes
+# if using votes
 if "no_votes" not in settings.FAQ_SETTINGS:
     # if using categories
     if "no_category" not in settings.FAQ_SETTINGS:
         urlpatterns += [
-            path("<slug:category>/<slug:question>/<slug:answer>/vote/", views.VoteAnswerHelpful.as_view(),
+            path("<uslug:category>/<uslug:question>/<uslug:answer>/vote/", views.VoteAnswerHelpful.as_view(),
                  name="vote_answer"),
-            path("<slug:category>/<slug:question>/vote/", views.VoteQuestionHelpful.as_view(), name="vote_question")
+            path("<uslug:category>/<uslug:question>/vote/", views.VoteQuestionHelpful.as_view(), name="vote_question")
         ]
     else:
         urlpatterns += [
-            path("<slug:question>/<slug:answer>/vote/", views.VoteAnswerHelpful.as_view(),
+            path("<uslug:question>/<uslug:answer>/vote/", views.VoteAnswerHelpful.as_view(),
                  name="vote_answer"),
-            path("<slug:question>/vote/", views.VoteQuestionHelpful.as_view(), name="vote_question")
+            path("<uslug:question>/vote/", views.VoteQuestionHelpful.as_view(), name="vote_question")
         ]
