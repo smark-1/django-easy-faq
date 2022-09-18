@@ -327,3 +327,5 @@ django-easy-faq aims to be the best faq app for django. It welcomes  contributio
 1.2 fixed bug in pypi distro not including faq app
 
 1.3 fixed bug where a slug must be filled out in admin even though slug gets auto generated to save for questions, answers, and categories. made questions, answers, categories slugs readonly in admin
+
+1.4 added unicode option to add unicode slugs
