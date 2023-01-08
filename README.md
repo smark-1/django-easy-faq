@@ -5,29 +5,34 @@ django-easy-faq is a Django app to allow for a simple yet feature rich faq app. 
 
 ## Quick start
 
-1. pip install::
+1. pip install:
 
-    pip install django-easy-faq
+    `pip install django-easy-faq`
 
-2. Add "faq" to your INSTALLED_APPS setting like this::
+2. Add "faq" to your INSTALLED_APPS setting like this:
 
+    ```python
     INSTALLED_APPS = [
         ...
-        'faq',
-    ]
+        'faq',]
+    ```
 
 3. Include the easy-faq URLconf in your project urls.py like this::
 
+    ```python
+    #…
     path('faq/', include('faq.urls')),
+    #…
+    ```
 
+4. Add `FAQ_SETTINGS = []` to your `settings.py`
+5. Run ``python manage.py makemigrations`` to cr`eate the faq models migrations.
+6. Run ``python manage.py migrate`` to create the faq models.
 
-4. Run ``python manage.py makemigrations`` to create the faq models migrations.
-5. Run ``python manage.py migrate`` to create the faq models.
-
-6. Start the development server and visit http://127.0.0.1:8000/admin/
+7. Start the development server and visit http://127.0.0.1:8000/admin/
    to create a category (you'll need the Admin app enabled).(categories part of the app can be disabled)
 
-7. Visit http://127.0.0.1:8000/faq/ to see the categories.
+8. Visit http://127.0.0.1:8000/faq/ to see the categories.
 
 ## Settings
 
