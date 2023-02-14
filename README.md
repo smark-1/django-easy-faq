@@ -55,6 +55,7 @@ add any or all to change to desired behavior::
 10. no_answer_votes                         - add if only want question voting
 11. no_question_votes                       - add if only want answer voting
 12. allow_unicode                           - add if you want to allow unicode slugs
+13. login_required                          - add if you want FAQs to be served to only logged-in users
 
 ## Templates
 
