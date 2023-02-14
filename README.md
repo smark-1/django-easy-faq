@@ -26,7 +26,7 @@ django-easy-faq is a Django app to allow for a simple yet feature rich faq app. 
     ```
 
 4. Add `FAQ_SETTINGS = []` to your `settings.py`
-5. Run ``python manage.py makemigrations`` to cr`eate the faq models migrations.
+5. Run ``python manage.py makemigrations`` to create the faq models migrations.
 6. Run ``python manage.py migrate`` to create the faq models.
 
 7. Start the development server and visit http://127.0.0.1:8000/admin/
@@ -55,6 +55,7 @@ add any or all to change to desired behavior::
 10. no_answer_votes                         - add if only want question voting
 11. no_question_votes                       - add if only want answer voting
 12. allow_unicode                           - add if you want to allow unicode slugs
+13. login_required                          - add if you want to only let logged in users see FAQ's
 
 ## Templates
 
@@ -334,3 +335,5 @@ django-easy-faq aims to be the best faq app for django. It welcomes  contributio
 1.3 fixed bug where a slug must be filled out in admin even though slug gets auto generated to save for questions, answers, and categories. made questions, answers, categories slugs readonly in admin
 
 1.4 added unicode option to add unicode slugs
+
+1.5 added login_required setting to allow faq app to be available to only logged in users

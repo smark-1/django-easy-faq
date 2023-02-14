@@ -1,8 +1,8 @@
 Metadata-Version: 2.1
 Name: django-easy-faq
-Version: 1.4
+Version: 1.5
 Summary: A Django app to add great faq functionality to website.
-Home-page: UNKNOWN
+Home-page: https://github.com/dragoncommits/django-easy-faq
 License: BSD-3-Clause
 Platform: UNKNOWN
 Classifier: Environment :: Web Environment
@@ -21,6 +21,7 @@ Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
 Requires-Python: >=3.6
 Description-Content-Type: text/markdown
 License-File: LICENSE.txt
+License-File: license
 
 # django-easy-faq
 
@@ -29,29 +30,34 @@ django-easy-faq is a Django app to allow for a simple yet feature rich faq app. 
 
 ## Quick start
 
-1. pip install::
+1. pip install:
 
-    pip install django-easy-faq
+    `pip install django-easy-faq`
 
-2. Add "faq" to your INSTALLED_APPS setting like this::
+2. Add "faq" to your INSTALLED_APPS setting like this:
 
+    ```python
     INSTALLED_APPS = [
         ...
-        'faq',
-    ]
+        'faq',]
+    ```
 
 3. Include the easy-faq URLconf in your project urls.py like this::
 
+    ```python
+    #…
     path('faq/', include('faq.urls')),
+    #…
+    ```
 
+4. Add `FAQ_SETTINGS = []` to your `settings.py`
+5. Run ``python manage.py makemigrations`` to create the faq models migrations.
+6. Run ``python manage.py migrate`` to create the faq models.
 
-4. Run ``python manage.py makemigrations`` to create the faq models migrations.
-5. Run ``python manage.py migrate`` to create the faq models.
-
-6. Start the development server and visit http://127.0.0.1:8000/admin/
+7. Start the development server and visit http://127.0.0.1:8000/admin/
    to create a category (you'll need the Admin app enabled).(categories part of the app can be disabled)
 
-7. Visit http://127.0.0.1:8000/faq/ to see the categories.
+8. Visit http://127.0.0.1:8000/faq/ to see the categories.
 
 ## Settings
 
@@ -74,6 +80,7 @@ add any or all to change to desired behavior::
 10. no_answer_votes                         - add if only want question voting
 11. no_question_votes                       - add if only want answer voting
 12. allow_unicode                           - add if you want to allow unicode slugs
+13. login_required                          - add if you want to only let logged in users see FAQ's
 
 ## Templates
 
@@ -353,4 +360,6 @@ django-easy-faq aims to be the best faq app for django. It welcomes  contributio
 1.3 fixed bug where a slug must be filled out in admin even though slug gets auto generated to save for questions, answers, and categories. made questions, answers, categories slugs readonly in admin
 
 1.4 added unicode option to add unicode slugs
+
+1.5 added login_required setting to allow faq app to be available to only logged in users
 
