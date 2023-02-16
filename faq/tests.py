@@ -171,3 +171,22 @@ class VoteanswerTestCase(TestCase):
             reverse("faq:vote_answer", args=(question.category.slug, question.slug, self.answer.slug)))
 
         self.assertEqual(response.status_code, 302)
+
+
+class DisabledUrlsTestCase(TestCase):
+    def setUp(self):
+        category = models.Category.objects.create(name="cat1", description="descript")
+
+        question = models.Question.objects.create(category=category, question="great question")
+
+        self.answer = models.Answer.objects.create(question=question, answer="because")
+
+    @override_settings(FAQ_SETTINGS=["disable_urls"])
+    def test_disabled_urls_cant_vote(self):
+        """return 404 when urls are disabled"""
+
+        question = models.Question.objects.first()
+        response = self.client.post(
+            reverse("faq:vote_answer", args=(question.category.slug, question.slug, self.answer.slug)))
+
+        self.assertEqual(response.status_code, 404)

@@ -56,6 +56,7 @@ add any or all to change to desired behavior::
 11. no_question_votes                       - add if only want answer voting
 12. allow_unicode                           - add if you want to allow unicode slugs
 13. login_required                          - add if you want to only let logged in users see FAQ's
+14. disable_urls                            - add if you want to disable the urls for the app, this is useful if you only want to use the models in your app
 
 ## Templates
 
