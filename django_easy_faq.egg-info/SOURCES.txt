@@ -23,6 +23,7 @@ faq/migrations/0001_initial.py
 faq/migrations/0002_alter_answer_id_alter_answerhelpful_id_and_more.py
 faq/migrations/0003_auto_20220619_0939.py
 faq/migrations/0004_alter_answer_slug_alter_category_slug.py
+faq/migrations/0005_rename_description_category__description.py
 faq/migrations/__init__.py
 faq/templates/faq/answer_form.html
 faq/templates/faq/base.html
