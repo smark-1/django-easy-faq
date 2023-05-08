@@ -337,3 +337,5 @@ django-easy-faq aims to be the best faq app for django. It welcomes  contributio
 1.4 added unicode option to add unicode slugs
 
 1.5 added login_required setting to allow faq app to be available to only logged in users
+
+1.6 fixed bug where no_category_description did not do remove the category description in the admin

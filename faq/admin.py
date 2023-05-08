@@ -1,8 +1,6 @@
 from django.contrib import admin
 from .models import *
 from django.conf import settings
-from . import forms
-
 
 # Register your models here.
 
@@ -26,10 +24,19 @@ class AnswerAdmin(admin.ModelAdmin):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("name", "slug", "description")
-    search_fields = ['name', "description"]
+    search_fields = ['name', "_description"]
     readonly_fields = ("slug",)
 
+    def get_list_display(self, request):
+        if "no_category_description" not in settings.FAQ_SETTINGS:
+            return ["name", "slug", "description"]
+        return ['name', 'slug']
+
+    def get_exclude(self, request, obj=None):
+        if "no_category_description" in settings.FAQ_SETTINGS:
+            return ['_description']
+        else:
+            return None
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ("comment", "question", "user", "post_time")

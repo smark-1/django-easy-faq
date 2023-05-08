@@ -89,6 +89,13 @@ class AddQuestion(UserPassesTestMixin, generic.CreateView):
             self.question_url = form.get_absolute_url()
             return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if "no_category" not in settings.FAQ_SETTINGS:
+            context['category'] = models.Category.objects.get(slug=self.kwargs["slug"])
+        return context
+
 
 class QuestionDetail(generic.DetailView):
     model = models.Question

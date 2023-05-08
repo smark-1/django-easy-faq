@@ -70,7 +70,7 @@ class Answer(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
-    description = models.TextField()
+    _description = models.TextField()
     slug = models.SlugField(max_length=50, unique=True, blank=True)
 
     def __str__(self):
@@ -78,6 +78,14 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "categories"
+
+    @property
+    def description(self):
+        """only show the description is categories have descriptions"""
+        if "no_category_description" in settings.FAQ_SETTINGS:
+            return None
+        else:
+            return self._description
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name, allow_unicode='allow_unicode' in settings.FAQ_SETTINGS)[:50]
