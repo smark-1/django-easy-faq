@@ -1,6 +1,6 @@
 # django-easy-faq
 
-django-easy-faq is a Django app to allow for a simple yet feature rich faq app. with categories, commenting voting of questions and answers all as an optional part of the app.
+django-easy-faq is a Django app to allow for a simple yet feature rich faq app. with categories, commenting voting of questions and answers all as an optional part of the app. To see screenshots of what this django-easy-faq could look like with bootstrap 5 styling [click here](demo/demo.md).
 
 
 ## Quick start

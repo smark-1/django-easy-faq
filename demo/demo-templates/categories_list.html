@@ -1,0 +1,21 @@
+{% extends 'faq/base.html' %}
+{% block title %}FAQ | Choose Category{% endblock %}
+{% block heading %}Select a FAQ category{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {% for category in categories %}
+            <div class="col-sm-6 mb-3 mb-sm-0 mt-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ category.name }}</h5>
+                        {% if category.description %}
+                            <p>{{category.description}}</p>
+                        {% endif %}
+                    <a href="{% url 'faq:category_detail' category.slug %}" class="btn btn-primary">View</a>
+                  </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

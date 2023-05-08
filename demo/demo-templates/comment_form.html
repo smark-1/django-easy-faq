@@ -1,0 +1,11 @@
+{% extends 'faq/question_base.html' %}
+
+{% block question_content %}
+<h1>Post A Comment</h1>
+<a href="{{question.get_absolute_url}}"><h3>{{question.question}}</h3></a>
+<form method="post">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit">
+</form>
+{% endblock %}

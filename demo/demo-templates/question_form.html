@@ -1,0 +1,31 @@
+{% extends 'faq/base.html' %}
+{% block title %}FAQ | Ask a Question{% endblock %}
+{% block heading %}Ask a Question{% endblock %}
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'faq:index_view' %}">FAQ</a></li>
+          {% if category %}
+              <li class="breadcrumb-item"><a href="{% url 'faq:category_detail' category.slug %}">{{category}}</a></li>
+          {% endif %}
+        <li class="breadcrumb-item active">Ask Question</li>
+      </ol>
+    </nav>
+{% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+        {% for field in form %}
+        <div class="mb-3">
+            <label for="{{ field.auto_id }}" class="form-label">{{ field.label }}</label>
+            <input required type="text" name="{{ field.name }}" class="form-control" id="{{ field.auto_id }}">
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <p class="text-danger">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+    {% endfor %}
+    <input type="submit" class="btn btn-success" value="Ask Question">
+</form>
+{% endblock %}
