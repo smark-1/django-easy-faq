@@ -25,8 +25,10 @@ class Question(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.question, allow_unicode='allow_unicode' in settings.FAQ_SETTINGS)[:150]
-        self.helpful = self.get_helpful()
-        self.not_helpful = self.get_not_helpful()
+        # if question already exists
+        if self.pk:
+            self.helpful = self.get_helpful()
+            self.not_helpful = self.get_not_helpful()
         return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -35,6 +37,10 @@ class Question(models.Model):
             return reverse("faq:question_detail", args=(self.category.slug, self.slug))
         else:
             return reverse("faq:question_detail", args=(self.slug,))
+
+
+    class Meta:
+        app_label = 'faq'
 
 
 class Answer(models.Model):
@@ -55,6 +61,7 @@ class Answer(models.Model):
 
     class Meta:
         order_with_respect_to = 'question'
+        app_label = 'faq'
 
     def save(self, *args, **kwargs):
         # if first time saving add a new slug
@@ -63,8 +70,10 @@ class Answer(models.Model):
             while Answer.objects.filter(slug=new_slug, answer=self.answer).exists():
                 new_slug = snippets.create_random_slug()
             self.slug = new_slug
-        self.helpful = self.get_helpful()
-        self.not_helpful = self.get_not_helpful()
+        # if answer is not new
+        if self.pk:
+            self.helpful = self.get_helpful()
+            self.not_helpful = self.get_not_helpful()
         super().save(*args, **kwargs)
 
 
@@ -78,6 +87,7 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "categories"
+        app_label = 'faq'
 
     @property
     def description(self):
@@ -103,6 +113,7 @@ class FAQComment(models.Model):
 
     class Meta:
         ordering = ['question', '-post_time']
+        app_label = 'faq'
 
 
 class AnswerHelpful(models.Model):
@@ -120,6 +131,7 @@ class AnswerHelpful(models.Model):
 
     class Meta:
         ordering = ['answer', 'vote']
+        app_label = 'faq'
 
 
 class QuestionHelpful(models.Model):
@@ -137,3 +149,4 @@ class QuestionHelpful(models.Model):
 
     class Meta:
         ordering = ['question', 'vote']
+        app_label = 'faq'

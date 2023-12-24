@@ -1,27 +1,27 @@
 Metadata-Version: 2.1
 Name: django-easy-faq
-Version: 1.6
+Version: 1.7
 Summary: A Django app to add great faq functionality to website.
 Home-page: https://github.com/dragoncommits/django-easy-faq
 License: BSD-3-Clause
-Platform: UNKNOWN
 Classifier: Environment :: Web Environment
 Classifier: Framework :: Django
 Classifier: Intended Audience :: Developers
 Classifier: License :: OSI Approved :: BSD License
 Classifier: Operating System :: OS Independent
 Classifier: Programming Language :: Python
-Classifier: Programming Language :: Python :: 3.6
 Classifier: Programming Language :: Python :: 3.7
 Classifier: Programming Language :: Python :: 3.8
 Classifier: Programming Language :: Python :: 3.9
 Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
 Classifier: Topic :: Internet :: WWW/HTTP
 Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
-Requires-Python: >=3.6
+Requires-Python: >=3.7
 Description-Content-Type: text/markdown
 License-File: LICENSE.txt
-License-File: license
+Requires-Dist: Django>=3.2
 
 # django-easy-faq
 
@@ -365,3 +365,4 @@ django-easy-faq aims to be the best faq app for django. It welcomes  contributio
 
 1.6 fixed bug where no_category_description did not do remove the category description in the admin
 
+1.7 added support for django 5.0

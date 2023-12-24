@@ -1,7 +1,6 @@
 LICENSE.txt
 MANIFEST.in
 README.md
-license
 setup.cfg
 setup.py
 django_easy_faq.egg-info/PKG-INFO
