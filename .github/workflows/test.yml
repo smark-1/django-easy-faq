@@ -1,0 +1,32 @@
+name: Test Wagtail Terms
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: ["3.9", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Set env
+        run: echo "RELEASE_VERSION=0.0.1" >> $GITHUB_ENV
+      - name: Install Dependencies
+        run: |
+          pip install Django
+          pip install -e .
+      - name: Run Tests
+        run: |
+          cd example
+          python manage.py test faq
