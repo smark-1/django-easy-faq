@@ -1,0 +1,9 @@
+{% extends 'faq/base.html' %}
+
+{% block title %}Example app{% endblock %}
+{% block heading %}Example FAQ{% endblock %}
+{% block content %}
+<div class="text-center m-5">
+    <a class="btn btn-primary btn-lg" href="{% url 'faq:index_view' %}">view faq</a>
+</div>
+{% endblock %}
