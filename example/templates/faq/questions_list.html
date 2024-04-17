@@ -1,0 +1,13 @@
+{% extends 'faq/base.html' %}
+{% block title %}FAQ | Choose Question{% endblock %}
+{% block heading %}Choose a FAQ Question{% endblock %}
+{% block content %}
+{% for question in questions %}
+    <h3><a href="{% url 'faq:question_detail' question.slug %}">{{question.question}}</a></h3>
+{% endfor %}
+
+{% if can_add_question %}
+    <hr>
+    <a href="{% url 'faq:add_question' %}">add question</a>
+{% endif %}
+{% endblock %}

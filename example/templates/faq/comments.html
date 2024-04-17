@@ -1,0 +1,35 @@
+<div class="container">
+    <h3 class="text-center">Comments</h3>
+    {% for comment in question.faqcomment_set.all %}
+        <div class="w-75 p-4 rounded-3 bg-body-tertiary m-auto border mt-3">
+            <h4>{{comment.comment}}</h4>
+            posted by {% if comment.user%}{{comment.user}}{% else %}anonymous{% endif %} {{comment.post_time|timesince}} ago
+        </div>
+    {% endfor %}
+
+
+    {% if add_new_comment_allowed %}
+        <br>
+        <br>
+        {% if category_enabled %}
+        <form class="w-75 m-auto" method="post" action="{% url 'faq:add_comment' question.category.slug question.slug %}">
+        {% else %}
+        <form class="w-75 m-auto" method="post" action="{% url 'faq:add_comment' question.slug %}">
+        {% endif %}
+            {% csrf_token %}
+
+            {% for field in comment_form %}
+            <div class="mb-3">
+                <label for="{{ field.auto_id }}" class="form-label">{{ field.label }}</label>
+                <input required type="text" name="{{ field.name }}" class="form-control" id="{{ field.auto_id }}">
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endfor %}
+            <input type="submit" name="post" class="btn btn-secondary">
+        </form>
+    {% endif %}
+</div>
