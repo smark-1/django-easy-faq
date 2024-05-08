@@ -5,7 +5,12 @@
 <h3>answers</h3>
 <ul>
     {% for answer in question.answer_set.all %}
-        <li><b>{{answer.answer}}</b>
+        <li>
+        {% if answer.is_rich_text %}
+            {{ answer.answer|safe }}
+        {% else %}
+            <b>{{answer.answer}}</b>
+        {% endif %}
             {% if can_vote_answer %}
              | found this answer helpful?
             <form style="display: inline;" action="{% if category_enabled %}{% url 'faq:vote_answer' question.category.slug question.slug answer.slug %}{% else %}{% url 'faq:vote_answer' question.slug answer.slug %}{% endif %}" method="post">
@@ -26,7 +31,11 @@
 {% else %}
     {% if question.answer_set.exists %}
         <p>answer:</p>
-        <h3>{{question.answer_set.first.answer}}</h3>
+        {% if question.answer_set.first.is_rich_text %}
+            <p>{{question.answer_set.first.answer|safe}}</p>
+        {% else %}
+            <h3>{{question.answer_set.first.answer}}</h3>
+        {% endif %}
         {% if can_vote_answer %}
          found this answer helpful?
         <form style="display: inline;" action="{% if category_enabled %}{% url 'faq:vote_answer' question.category.slug question.slug question.answer_set.first.slug %}{% else %}{% url 'faq:vote_answer' question.slug question.answer_set.first.slug %}{% endif %}" method="post">

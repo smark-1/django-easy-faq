@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}FAQ{% endblock %}</title>
+    {% if form %}
+        {{ form.media }}
+    {% endif %}
 </head>
 <body>
 <h1>{% block heading %}{% endblock %}</h1>

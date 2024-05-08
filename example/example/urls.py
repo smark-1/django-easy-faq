@@ -6,5 +6,6 @@ urlpatterns = [
     path("", home),
     path('faq/', include('faq.urls')),
     path("admin/", admin.site.urls),
+    path('tinymce/', include('tinymce.urls')),
 ]
 

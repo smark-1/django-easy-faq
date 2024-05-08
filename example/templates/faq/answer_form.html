@@ -16,20 +16,22 @@
     </nav>
 {% endblock %}
 {% block content %}
+    {{ form.media }}
 <a href="{{question.get_absolute_url}}"><h2>{{question.question}}</h2></a>
 <form method="post">
     {% csrf_token %}
-    {% for field in form %}
-        <div class="mb-3">
-            <label for="{{ field.auto_id }}" class="form-label">{{ field.label }}</label>
-            <input type="text" name="{{ field.name }}" class="form-control" id="{{ field.auto_id }}" required>
-            {% if field.errors %}
-                {% for error in field.errors %}
-                    <p class="text-danger">{{ error }}</p>
-                {% endfor %}
-            {% endif %}
-        </div>
-    {% endfor %}
+    {{ form.as_p }}
+{#    {% for field in form %}#}
+{#        <div class="mb-3">#}
+{#            <label for="{{ field.auto_id }}" class="form-label">{{ field.label }}</label>#}
+{#            <input type="text" name="{{ field.name }}" class="form-control" id="{{ field.auto_id }}" required>#}
+{#            {% if field.errors %}#}
+{#                {% for error in field.errors %}#}
+{#                    <p class="text-danger">{{ error }}</p>#}
+{#                {% endfor %}#}
+{#            {% endif %}#}
+{#        </div>#}
+{#    {% endfor %}#}
     <input type="submit" class="btn btn-success">
 </form>
 {% endblock %}

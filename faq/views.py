@@ -135,9 +135,8 @@ class QuestionDetail(generic.DetailView):
 
 
 class AddAnswer(UserPassesTestMixin, generic.CreateView):
-    model = models.Answer
-    fields = ["answer"]
     template_name = "faq/answer_form.html"
+    form_class = forms.AnswerForm
 
     def test_func(self):
         # when authenticated_user_can_add_question in the FAQ_SETTINGS is set to True
@@ -191,6 +190,8 @@ class AddAnswer(UserPassesTestMixin, generic.CreateView):
             question = models.Question.objects.get(slug=self.kwargs['question'])
 
         form.question = question
+        if "rich_text_answers" in settings.FAQ_SETTINGS:
+            form.is_rich_text = True
         form.save()
         return super().form_valid(form)
 

@@ -56,6 +56,7 @@ add any or all to change to desired behavior::
 11. no_question_votes                       - add if only want answer voting
 12. allow_unicode                           - add if you want to allow unicode slugs
 13. login_required                          - add if you want to only let logged in users see FAQ's
+14. rich_text_answers                       - add if you want to use rich text for answers. This requires the django-tinymce package to be installed
 
 ## Templates
 
@@ -317,6 +318,24 @@ the app name for the urls is ``'faq'``
     * only works if using question voting
     * used to post hidden input vote = 1 or vote = 0 depending on vote up or down
 
+## django-tinymce
+If you want to use rich text answers you will need to [install django-tinymce](https://django-tinymce.readthedocs.io/en/latest/installation.html#id2)
+
+Make sure to include in the template the `{{ form.media }}` to include the tinymce javascript and css files.
+> [!WARNING]  
+> Failing to follow the following steps will result in a xss vulnerability in your site.
+
+To allow the rich text answers to be rendered properly you will need to use the safe filter in your templates.
+While django-tinymce does escape the html the answers that were created when the rich text editor was not enabled **has not been escaped and is not safe**.
+So these answers cannot be rendered with the safe filter. So a flag was added to the answer model 'is_rich_text' that is set to True when the answer is created with the rich text editor.
+In the template you can use the following code to render the answer properly::
+
+    {% if answer.is_rich_text %}
+        {{answer.answer|safe}}
+    {% else %}
+        {{answer.answer}}
+    {% endif %}
+
 ## Contributing
 
 django-easy-faq aims to be the best faq app for django. It welcomes  contributions of all types - issues, bugs, feature requests, documentation updates, tests and pull requests
@@ -341,3 +360,5 @@ django-easy-faq aims to be the best faq app for django. It welcomes  contributio
 1.6 fixed bug where no_category_description did not do remove the category description in the admin
 
 1.7 added support for django 5.0
+
+1.8 added support for richtext answers with django-tinymce
