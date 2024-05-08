@@ -1,4 +1,4 @@
-name: Test Wagtail Terms
+name: Test django-easy-faq
 
 on:
   push:
