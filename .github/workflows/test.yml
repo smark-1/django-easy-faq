@@ -24,6 +24,7 @@ jobs:
         run: echo "RELEASE_VERSION=0.0.1" >> $GITHUB_ENV
       - name: Install Dependencies
         run: |
+          pip install django-tinymce
           pip install Django
           pip install -e .
       - name: Run Tests

@@ -49,6 +49,7 @@ class Answer(models.Model):
     slug = models.SlugField(max_length=10, blank=True)
     helpful = models.IntegerField(default=0)
     not_helpful = models.IntegerField(default=0)
+    is_rich_text = models.BooleanField(default=False)
 
     def get_helpful(self):
         return AnswerHelpful.objects.filter(answer=self, vote=True).count()

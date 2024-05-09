@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'faq'
+    'faq',
+    'tinymce',
 ]
 
 MIDDLEWARE = [
@@ -150,4 +151,9 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # https://github.com/smark-1/django-easy-faq
 # Django easy FAQ settings
-FAQ_SETTINGS = []
+FAQ_SETTINGS = [
+    'logged_in_users_can_answer_question',
+    'allow_multiple_answers',
+    'rich_text_answers',
+    'logged_in_users_can_add_question',
+]

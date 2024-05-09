@@ -17,10 +17,10 @@ class QuestionHelpfulAdmin(admin.ModelAdmin):
 
 
 class AnswerAdmin(admin.ModelAdmin):
-    list_display = ("answer", "question", "helpful", "not_helpful")
-    list_filter = ('helpful', "not_helpful")
+    list_display = ("answer", "question", "helpful", "not_helpful",'is_rich_text')
+    list_filter = ('helpful', "not_helpful",'is_rich_text')
     search_fields = ['answer', "question"]
-    readonly_fields = ('helpful', "not_helpful", 'slug')
+    readonly_fields = ('helpful', "not_helpful", 'slug','is_rich_text')
 
 
 class CategoryAdmin(admin.ModelAdmin):

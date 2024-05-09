@@ -8,7 +8,11 @@
         <div class="col-6 mb-3">
             <div class="card">
                 <div class="card-body">
+                    {% if answer.is_rich_text %}
+                        <p>{{ answer.answer|safe }}</p>
+                    {% else %}
                     <h5 class="card-title">{{answer.answer}}</h5>
+                    {% endif %}
                 </div>
                 {% if can_vote_answer %}
                     <div class="card-footer text-body-secondary">
@@ -33,7 +37,12 @@
 {% else %}
     {% if question.answer_set.exists %}
         <p>Answer:</p>
-        <h3>{{question.answer_set.first.answer}}</h3>
+        {% if question.answer_set.first.is_rich_text %}
+            <p>{{ question.answer_set.first.answer|safe }}</p>
+        {% else %}
+            <h3>{{question.answer_set.first.answer}}</h3>
+        {% endif %}
+
         {% if can_vote_answer %}
          found this answer helpful?
         <form style="display: inline;" action="{% if category_enabled %}{% url 'faq:vote_answer' question.category.slug question.slug question.answer_set.first.slug %}{% else %}{% url 'faq:vote_answer' question.slug question.answer_set.first.slug %}{% endif %}" method="post">
