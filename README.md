@@ -362,3 +362,5 @@ django-easy-faq aims to be the best faq app for django. It welcomes  contributio
 1.7 added support for django 5.0
 
 1.8 added support for richtext answers with django-tinymce
+
+1.9 added view onsite link in admin
