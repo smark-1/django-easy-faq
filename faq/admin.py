@@ -1,7 +1,8 @@
+from django import forms
 from django.contrib import admin
 from .models import *
 from django.conf import settings
-
+from django.utils.html import strip_tags
 # Register your models here.
 
 class AnswerHelpfulAdmin(admin.ModelAdmin):
@@ -16,13 +17,39 @@ class QuestionHelpfulAdmin(admin.ModelAdmin):
     search_fields = ['question', "user"]
 
 
+class AnswerAdminForm(forms.ModelForm):
+    class Meta:
+        model = Answer
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            if self.instance.is_rich_text:
+                try:
+                    from tinymce.widgets import TinyMCE
+                    self.fields["answer"].widget = TinyMCE()
+                except ImportError:
+                    raise ImportError("Please install django-tinymce to use rich text answers")
+        elif "rich_text_answers" in settings.FAQ_SETTINGS:
+            self.instance.is_rich_text = True
+            try:
+                from tinymce.widgets import TinyMCE
+                self.fields["answer"].widget = TinyMCE()
+            except ImportError:
+                raise ImportError("Please install django-tinymce to use rich text answers")
+
+
 class AnswerAdmin(admin.ModelAdmin):
-    list_display = ("answer", "question", "helpful", "not_helpful",'is_rich_text')
+    list_display = ("answer_", "question", "helpful", "not_helpful",'is_rich_text')
     list_filter = ('helpful', "not_helpful",'is_rich_text')
     search_fields = ['answer', "question"]
     readonly_fields = ('helpful', "not_helpful", 'slug','is_rich_text')
-
-
+    form = AnswerAdminForm
+    def answer_(self, obj):
+        if obj.is_rich_text:
+            return strip_tags(obj.answer)
+        return obj.answer
 class CategoryAdmin(admin.ModelAdmin):
     search_fields = ['name', "_description"]
     readonly_fields = ("slug",)
