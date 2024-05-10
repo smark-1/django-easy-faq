@@ -38,7 +38,6 @@ class Question(models.Model):
         else:
             return reverse("faq:question_detail", args=(self.slug,))
 
-
     class Meta:
         app_label = 'faq'
 
@@ -77,6 +76,13 @@ class Answer(models.Model):
             self.not_helpful = self.get_not_helpful()
         super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        # if using categories
+        if "no_category" not in settings.FAQ_SETTINGS:
+            return reverse("faq:question_detail", args=(self.question.category.slug, self.question.slug))
+        else:
+            return reverse("faq:question_detail", args=(self.question.slug,))
+
 
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -102,6 +108,9 @@ class Category(models.Model):
         self.slug = slugify(self.name, allow_unicode='allow_unicode' in settings.FAQ_SETTINGS)[:50]
         return super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse("faq:category_detail", args=(self.slug,))
+
 
 class FAQComment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
@@ -115,6 +124,13 @@ class FAQComment(models.Model):
     class Meta:
         ordering = ['question', '-post_time']
         app_label = 'faq'
+
+    def get_absolute_url(self):
+        # if using categories
+        if "no_category" not in settings.FAQ_SETTINGS:
+            return reverse("faq:question_detail", args=(self.question.category.slug, self.question.slug))
+        else:
+            return reverse("faq:question_detail", args=(self.question.slug,))
 
 
 class AnswerHelpful(models.Model):
@@ -134,6 +150,14 @@ class AnswerHelpful(models.Model):
         ordering = ['answer', 'vote']
         app_label = 'faq'
 
+    def get_absolute_url(self):
+        # if using categories
+        if "no_category" not in settings.FAQ_SETTINGS:
+            return reverse("faq:question_detail", args=(self.answer.question.category.slug, self.answer.question.slug))
+        else:
+            return reverse("faq:question_detail", args=(self.answer.question.slug,))
+
+
 
 class QuestionHelpful(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -151,3 +175,10 @@ class QuestionHelpful(models.Model):
     class Meta:
         ordering = ['question', 'vote']
         app_label = 'faq'
+
+    def get_absolute_url(self):
+        # if using categories
+        if "no_category" not in settings.FAQ_SETTINGS:
+            return reverse("faq:question_detail", args=(self.question.category.slug, self.question.slug))
+        else:
+            return reverse("faq:question_detail", args=(self.question.slug,))
