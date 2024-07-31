@@ -337,30 +337,29 @@ In the template you can use the following code to render the answer properly::
     {% endif %}
 
 ## Contributing
-
-django-easy-faq aims to be the best faq app for django. It welcomes  contributions of all types - issues, bugs, feature requests, documentation updates, tests and pull requests
+django-easy-faq aims to be the best faq app for django. It welcomes contributions of all types - issues, bugs, feature requests, documentation updates, tests and pull requests.
 
 ## change log
-0.4 fixed bug that logged out users can vote - which then raises exceptions
+- 1.9 added view onsite link in admin, added richtext answers in admin
 
-0.5 fixed migrations
+- 1.8 added support for richtext answers with django-tinymce
 
-1.0 added pypi distribution
+- 1.7 added support for django 5.0
 
-1.1 added more templates to override easily
+- 1.6 fixed bug where no_category_description did not do remove the category description in the admin
 
-1.2 fixed bug in pypi distro not including faq app
+- 1.5 added login_required setting to allow faq app to be available to only logged in users
 
-1.3 fixed bug where a slug must be filled out in admin even though slug gets auto generated to save for questions, answers, and categories. Made questions, answers, categories slugs readonly in admin
+- 1.4 added unicode option to add unicode slugs
 
-1.4 added unicode option to add unicode slugs
+- 1.3 fixed bug where a slug must be filled out in admin even though slug gets auto generated to save for questions, answers, and categories. Made questions, answers, categories slugs readonly in admin
 
-1.5 added login_required setting to allow faq app to be available to only logged in users
+- 1.2 fixed bug in pypi distro not including faq app
 
-1.6 fixed bug where no_category_description did not do remove the category description in the admin
+- 1.1 added more templates to override easily
 
-1.7 added support for django 5.0
+- 1.0 added pypi distribution
 
-1.8 added support for richtext answers with django-tinymce
+- 0.5 fixed migrations
 
-1.9 added view onsite link in admin, added richtext answers in admin
+- 0.4 fixed bug that logged out users can vote - which then raises exceptions
