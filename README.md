@@ -340,6 +340,8 @@ In the template you can use the following code to render the answer properly::
 django-easy-faq aims to be the best faq app for django. It welcomes contributions of all types - issues, bugs, feature requests, documentation updates, tests and pull requests.
 
 ## change log
+- 1.10 fixed admin search fields, updated testing matrix
+
 - 1.9 added view onsite link in admin, added richtext answers in admin
 
 - 1.8 added support for richtext answers with django-tinymce
