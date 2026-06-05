@@ -8,13 +8,13 @@ from django.utils.html import strip_tags
 class AnswerHelpfulAdmin(admin.ModelAdmin):
     list_display = ("vote", "answer", "user")
     list_filter = ('vote',)
-    search_fields = ['answer', "user"]
+    search_fields = ['answer__answer', "user__username"]
 
 
 class QuestionHelpfulAdmin(admin.ModelAdmin):
     list_display = ("vote", "question", "user")
     list_filter = ('vote',)
-    search_fields = ['question', "user"]
+    search_fields = ['question__question', "user__username"]
 
 
 class AnswerAdminForm(forms.ModelForm):
@@ -43,7 +43,7 @@ class AnswerAdminForm(forms.ModelForm):
 class AnswerAdmin(admin.ModelAdmin):
     list_display = ("answer_", "question", "helpful", "not_helpful",'is_rich_text')
     list_filter = ('helpful', "not_helpful",'is_rich_text')
-    search_fields = ['answer', "question"]
+    search_fields = ['answer', "question__question"]
     readonly_fields = ('helpful', "not_helpful", 'slug','is_rich_text')
     form = AnswerAdminForm
     def answer_(self, obj):
@@ -68,7 +68,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     list_display = ("comment", "question", "user", "post_time")
     list_filter = ('question', "post_time")
-    search_fields = ['comment', "question"]
+    search_fields = ['comment', "question__question"]
 
 
 class QuestionAdmin(admin.ModelAdmin):

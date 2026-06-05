@@ -174,3 +174,46 @@ class VoteanswerTestCase(TestCase):
                 reverse("faq:vote_answer", args=(question.category.slug, question.slug, self.answer.slug)))
 
         self.assertEqual(response.status_code, 302)
+
+
+class AdminSearchFieldsTestCase(TestCase):
+    """Ensure admin search_fields don't attempt icontains on ForeignKey fields and raise FieldError."""
+
+    def setUp(self):
+        from django.contrib import admin as django_admin
+        self.admin = django_admin
+        self.user = User.objects.create_user(username='bob', password='pw', email='bob@example.com')
+        self.superuser = User.objects.create_superuser(username='admin', email='admin@example.com', password='pw')
+        category = models.Category.objects.create(name='cat', _description='desc')
+        self.question = models.Question.objects.create(category=category, question='searchable question')
+        self.answer = models.Answer.objects.create(question=self.question, answer='searchable answer')
+        self.comment = models.FAQComment.objects.create(user=self.user, comment='search comment', question=self.question)
+        self.ans_help = models.AnswerHelpful.objects.create(user=self.user, answer=self.answer, vote=True)
+        self.q_help = models.QuestionHelpful.objects.create(user=self.user, question=self.question, vote=True)
+        self.request = RequestFactory().get('/admin/')
+        self.request.user = self.superuser
+
+    def _get_results(self, admin_class, model, term):
+        admin_inst = admin_class(model, self.admin.site)
+        qs = model.objects.all()
+        return admin_inst.get_search_results(self.request, qs, term)
+
+    def test_answer_helpful_admin_search_fields_valid(self):
+        from faq.admin import AnswerHelpfulAdmin
+        results, _ = self._get_results(AnswerHelpfulAdmin, models.AnswerHelpful, 'searchable')
+        self.assertTrue(results.exists())
+
+    def test_question_helpful_admin_search_fields_valid(self):
+        from faq.admin import QuestionHelpfulAdmin
+        results, _ = self._get_results(QuestionHelpfulAdmin, models.QuestionHelpful, 'searchable')
+        self.assertTrue(results.exists())
+
+    def test_comment_admin_search_fields_valid(self):
+        from faq.admin import CommentAdmin
+        results, _ = self._get_results(CommentAdmin, models.FAQComment, 'search')
+        self.assertTrue(results.exists())
+
+    def test_answer_admin_search_fields_valid(self):
+        from faq.admin import AnswerAdmin
+        results, _ = self._get_results(AnswerAdmin, models.Answer, 'searchable')
+        self.assertTrue(results.exists())
