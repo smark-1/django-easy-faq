@@ -8,26 +8,38 @@ on:
 
 jobs:
   build:
+    name: Build/Test (Python ${{ matrix.python-version }}, Django ${{ matrix.django-version }})
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
       matrix:
-        python-version: ["3.9", "3.12"]
+        python-version: ["3.10", "3.11", "3.12", "3.14"]
+        django-version: ["6.0", "5.2", "5.1"]
+        exclude:
+          # Django 5.1 does not support Python 3.14 (support was added in 5.2)
+          - django-version: "5.1"
+            python-version: "3.14"
+
+          # Django 6.0 dropped support for Python 3.10 and 3.11 (requires 3.12+)
+          - django-version: "6.0"
+            python-version: "3.10"
+          - django-version: "6.0"
+            python-version: "3.11"
 
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python ${{ matrix.python-version }} & Django ${{ matrix.django-version }}
         uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Set env
+      - name: Set env (Python ${{ matrix.python-version }}, Django ${{ matrix.django-version }})
         run: echo "RELEASE_VERSION=0.0.1" >> $GITHUB_ENV
-      - name: Install Dependencies
+      - name: Install Dependencies (Python ${{ matrix.python-version }}, Django ${{ matrix.django-version }})
         run: |
           pip install django-tinymce
-          pip install Django
+          pip install "Django==${{ matrix.django-version }}"
           pip install -e .
-      - name: Run Tests
+      - name: Run Tests (Python ${{ matrix.python-version }}, Django ${{ matrix.django-version }})
         run: |
           cd example
           python manage.py test faq
